@@ -1,4 +1,4 @@
-#Ionosphere
+#bafimpy
 
 Python implementation of the original Bayesian filtering module [(BAFIM)](https://github.com/ilkkavir/BAFIM) for the purpose of only demonetration. 
 
