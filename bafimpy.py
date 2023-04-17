@@ -47,10 +47,10 @@ def bafimpy(matfile, dt, fit_alts, H):
     dh1 = np.diff(alt_km)
     dh = np.insert(dh1, 0, dh1[0])
     #
-    hlimNe = np.maximum(fit_alts[0, 0], np.min(alt_km)+0.1)
-    hlimTi = np.maximum(fit_alts[1, 0], np.min(alt_km)+0.1)
-    hlimTr = np.maximum(fit_alts[2, 0], np.min(alt_km)+0.1)
-    hlimvi = np.maximum(fit_alts[4, 0], np.min(alt_km)+0.1)
+    # hlimNe = np.maximum(fit_alts[0, 0], np.min(alt_km)+0.1)
+    # hlimTi = np.maximum(fit_alts[1, 0], np.min(alt_km)+0.1)
+    # hlimTr = np.maximum(fit_alts[2, 0], np.min(alt_km)+0.1)
+    # hlimvi = np.maximum(fit_alts[4, 0], np.min(alt_km)+0.1)
     #
     ʰSₙ = fit_alts[0, 2];              lₙ = ʰSₙ*H           
     ʰSₜ = fit_alts[1, 2];              lₜ = ʰSₜ*H     
@@ -128,5 +128,23 @@ def bafimpy(matfile, dt, fit_alts, H):
     apriori2_s[:, 4] = Vi_s
     apriori2_s[:, 5] = Op_s
     #
+    Ne_error_s = np.sqrt(np.diag(Σᵖ[0:nh, 0:nh]))
+    Ti_error_s = np.sqrt(np.diag(Σᵖ[nh:2*nh, nh:2*nh]))
+    Tr_error_s = np.sqrt(np.diag(Σᵖ[2*nh:3*nh, 2*nh:3*nh]))
+    Vi_error_s = np.sqrt(np.diag(Σᵖ[3*nh:4*nh, 3*nh:4*nh]))
+    Op_error_s = np.sqrt(np.diag(Σᵖ[4*nh:5*nh, 4*nh:5*nh]))
+    #
+    apriorierror2_s = np.zeros((nh,6))
+    apriorierror2_s[:, 0] = Ne_error_s
+    apriorierror2_s[:, 1] = Ti_error_s
+    apriorierror2_s[:, 2] = Tr_error_s
+    apriorierror2_s[:, 3] = error_s[:,3]
+    apriorierror2_s[:, 4] = Vi_error_s
+    apriorierror2_s[:, 5] = Op_error_s
+    #
+    qf = np.zeros(nh,)
+    Q = np.vstack((qₙ, qₜ, qᵣ, qf, qᵥ, qₚ)).T
+    #
     apriori2 = scaled2real(apriori2_s)
-    return apriori2
+    apriorierror2 = scaled2real(apriorierror2_s)+np.sqrt(Q)
+    return (apriori2, apriorierror2)
