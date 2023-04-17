@@ -14,7 +14,6 @@ def bafimpy(matfile, dt, fit_alts, H):
     from plasma fitted parameters at time step k
 
     parameters
-
     -----------
 
     matfile: string
