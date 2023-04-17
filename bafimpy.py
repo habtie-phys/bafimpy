@@ -8,7 +8,24 @@ from vec2covm import vec2covm
 #
 
 def bafimpy(matfile, dt, fit_alts, H):
-    #
+    """
+    Calculating the apriori and apriorierror of 
+    plasma parameters for the time step k+1 
+    from plasma fitted parameters at time step k
+
+    parameters
+
+    -----------
+
+    matfile: string
+        Path to the GUISDAP+BAFIM output file for time step k
+    dt:float
+        time difference between the time steps k and k+1, in seconds
+    fit_alts:Numpy array
+        array of constants to control correlation length and process noise
+    H:Numpy array
+        Scale height at of the ionosphere at fitting altitudes
+    """
     pars = read_pars(matfile)
     alt_km = pars['alt_km']
     param = pars['param']
